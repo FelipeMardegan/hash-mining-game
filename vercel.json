@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "name": "hash-mining-game",
   "builds": [
     {
       "src": "index.html",
