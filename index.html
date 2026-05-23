@@ -519,12 +519,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 ════════════════════════════════════════════════════ */
 function showAd(){
   return new Promise(resolve=>{
-    if(typeof show_YOUR_ZONE_ID!=='undefined'){
-      show_YOUR_ZONE_ID({type:'end',ymid:'u_'+Date.now()}).then(resolve).catch(resolve);
-    } else {
-      // DEMO: simula anúncio de 5s quando SDK não está carregado
-      setTimeout(resolve,5500);
-    }
+    // Abre o link da MONETAG em popup
+    const adWindow = window.open('https://omg10.com/4/11048525', 'ad_popup', 'width=800,height=600,left=100,top=100');
+    
+    // Fecha o popup após 5 segundos e resolve
+    setTimeout(() => {
+      if(adWindow && !adWindow.closed) {
+        adWindow.close();
+      }
+      resolve();
+    }, 5000);
   });
 }
 
