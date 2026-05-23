@@ -1093,20 +1093,34 @@ let adCooldownInterval=null;
 
 function watchAdReward(){
   if(adCooldownRemaining>0)return;
-  S.gems+=2;
-  S.stats.adsWatched++;
-  S.tasks.watchad.done=Math.min(S.stats.adsWatched,3);
-  saveState();
-  showToast('📺 +2 💎 Anúncio assistido!');
-  updateHUD();
-  updateTaskBadge();
-  adCooldownRemaining=90;
-  updateAdButton();
-  adCooldownInterval=setInterval(()=>{
-    adCooldownRemaining--;
+  
+  // Abre o link da MONETAG em popup
+  const adWindow = window.open('https://omg10.com/4/11048525', 'ad_popup', 'width=800,height=600,left=100,top=100');
+  
+  // Fecha o popup após 10 segundos e dá a recompensa
+  setTimeout(() => {
+    if(adWindow && !adWindow.closed) {
+      adWindow.close();
+    }
+    
+    // Dá a recompensa
+    S.gems+=2;
+    S.stats.adsWatched++;
+    S.tasks.watchad.done=Math.min(S.stats.adsWatched,3);
+    saveState();
+    showToast('📺 +2 💎 Anúncio assistido!');
+    updateHUD();
+    updateTaskBadge();
+    
+    // Inicia o cooldown de 60 segundos
+    adCooldownRemaining=60;
     updateAdButton();
-    if(adCooldownRemaining<=0)clearInterval(adCooldownInterval);
-  },1000);
+    adCooldownInterval=setInterval(()=>{
+      adCooldownRemaining--;
+      updateAdButton();
+      if(adCooldownRemaining<=0)clearInterval(adCooldownInterval);
+    },1000);
+  }, 10000);
 }
 
 function updateAdButton(){
